@@ -5,24 +5,7 @@ include 'koneksi.php';
 $queryStok = mysqli_query($conn, "SELECT * FROM stok LIMIT 1");
 $dataStok = mysqli_fetch_assoc($queryStok);
 
-if (isset($_POST['pesan_minyak'])) {
-    if (!isset($_SESSION['login'])) { header("Location: login.php"); exit; }
-    
-    $user_id = $_SESSION['user_id'];
-    $produk_id = $dataStok['produk_id'];
-    $jumlah = $_POST['jumlah'];
-    $total_harga = $jumlah * $dataStok['harga_per_liter'];
-    $waktu = date('Y-m-d H:i:s');
-
-    $insert = mysqli_query($conn, "INSERT INTO transaksi (produk_id, user_id, jumlah, total_harga, waktu) VALUES ('$produk_id', '$user_id', '$jumlah', '$total_harga', '$waktu')");
-    if ($insert) {
-        mysqli_query($conn, "UPDATE stok SET liter_tersedia = liter_tersedia - $jumlah WHERE produk_id = '$produk_id'");
-        echo "<script>alert('Pesanan Berhasil!'); window.location='index.php';</script>";
-    }
-}
-
 $queryBeritaIndex = mysqli_query($conn, "SELECT * FROM berita ORDER BY tanggal_post DESC");
-$b = mysqli_fetch_assoc($queryBeritaIndex);
 ?>
 <!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
@@ -141,6 +124,8 @@ $b = mysqli_fetch_assoc($queryBeritaIndex);
             <h2 class="text-3xl font-bold mb-6 text-center text-blue-900">Form Pemesanan</h2>
             
             <form action="proses_pesan.php" method="POST" enctype="multipart/form-data" class="space-y-4">
+                <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
+                
                 <div>
                     <label class="block text-xs font-bold uppercase mb-2 text-slate-500">Nama Lengkap (Sesuai KTP)</label>
                     <input type="text" name="nama_lengkap" required class="w-full p-4 bg-slate-50 border rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none">
@@ -154,7 +139,7 @@ $b = mysqli_fetch_assoc($queryBeritaIndex);
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-bold uppercase mb-2 text-slate-500">Jumlah Liter</label>
-                        <input type="number" name="jumlah" min="1" max="200" required class="w-full p-4 bg-slate-50 border rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none">
+                        <input type="number" name="jumlah" min="1" max="800" required class="w-full p-4 bg-slate-50 border rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
                     <div>
                         <label class="block text-xs font-bold uppercase mb-2 text-slate-500">Lampiran Foto KTP</label>
@@ -240,6 +225,5 @@ $b = mysqli_fetch_assoc($queryBeritaIndex);
     <footer class="py-12 bg-black text-center text-slate-600 text-[10px] font-black uppercase tracking-[0.5em]">
         © 2026 Pangkalan Minyak Okita 
     </footer>
-
 </body>
 </html>

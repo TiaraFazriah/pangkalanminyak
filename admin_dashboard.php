@@ -7,7 +7,6 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] !== 'admin') {
     exit;
 }
 
-// Mengambil data stok untuk ditampilkan di kartu statistik
 $queryStok = mysqli_query($conn, "SELECT * FROM stok LIMIT 1");
 $dataStok = mysqli_fetch_assoc($queryStok);
 
