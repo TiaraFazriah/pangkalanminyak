@@ -14,6 +14,11 @@ $today = date('Y-m-d');
 $queryCount = mysqli_query($conn, "SELECT COUNT(*) as total FROM transaksi WHERE DATE(waktu) = '$today'");
 $countData = mysqli_fetch_assoc($queryCount);
 $totalHariIni = $countData['total'] ?? 0;
+
+// QUERY BARU: Menghitung total pengguna dengan role 'user'
+$queryUser = mysqli_query($conn, "SELECT COUNT(*) as total_user FROM users WHERE role = 'user'");
+$userData = mysqli_fetch_assoc($queryUser);
+$totalUser = $userData['total_user'] ?? 0;
 ?>
 
 <!DOCTYPE html>
@@ -62,6 +67,12 @@ $totalHariIni = $countData['total'] ?? 0;
                     <i class="fas fa-shopping-cart mr-3 w-5"></i> Pesanan Masuk
                 </a>
 
+                <a href="data_user.php" class="flex items-center p-3 mb-2 <?= isActive('data_user.php', $current_page) ?>">
+                    <i class="fas fa-fw fa-users mr-3 w-5"></i> Data User
+                </a>
+
+            
+
                 <div class="border-t border-blue-800 my-4"></div>
                 
                 <a href="logout.php" class="flex items-center p-3 text-red-300 hover:text-red-100 transition">
@@ -81,7 +92,7 @@ $totalHariIni = $countData['total'] ?? 0;
             </header>
 
             <div class="p-8">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
                     <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
                         <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Stok Tersedia</p>
                         <h3 class="text-3xl font-black text-slate-800">
@@ -101,6 +112,13 @@ $totalHariIni = $countData['total'] ?? 0;
                         <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Transaksi Hari Ini</p>
                         <h3 class="text-3xl font-black text-green-600">
                             <?= $totalHariIni ?>
+                        </h3>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
+                        <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Total Pelanggan</p>
+                        <h3 class="text-3xl font-black text-purple-600">
+                            <?= $totalUser ?> <span class="text-lg font-normal text-slate-400">User</span>
                         </h3>
                     </div>
                 </div>

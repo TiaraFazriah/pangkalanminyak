@@ -167,9 +167,9 @@ $queryBeritaIndex = mysqli_query($conn, "SELECT * FROM berita ORDER BY tanggal_p
                     <?php while($b = mysqli_fetch_assoc($queryBeritaIndex)): ?>
                     <div class="bg-white p-8 rounded-3xl shadow-sm border-b-8 border-purple-500 hover:transform hover:-translate-y-2 transition duration-300">
                         <i class="<?= $b['kategori'] ?> text-3xl text-purple-600 mb-6"></i>
-                        <h3 class="font-bold text-xl mb-4 text-slate-800"><?= $b['judul'] ?></h3>
+                        <h3 class="font-bold text-xl mb-4 text-slate-800"><?= htmlspecialchars($b['judul']) ?></h3>
                         <p class="text-slate-500 text-sm leading-relaxed line-clamp-3">
-                            <?= $b['isi'] ?>
+                            <?= nl2br(htmlspecialchars($b['isi'])) ?>
                         </p>
                         <div class="mt-6 pt-6 border-t border-slate-50 flex justify-between items-center">
                             <span class="text-[10px] text-slate-400 uppercase font-black tracking-widest">

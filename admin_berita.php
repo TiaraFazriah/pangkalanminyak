@@ -7,8 +7,9 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] !== 'admin') {
     exit;
 }
 
+// Mengambil seluruh data berita
 $queryBerita = mysqli_query($conn, "SELECT * FROM berita ORDER BY tanggal_post DESC");
-$row = mysqli_fetch_assoc($queryBerita);
+// BARIS SANGKUTAN ($row = mysqli_fetch_assoc...) DI SINI SUDAH DIHAPUS AGAR DATA TIDAK TERLEWAT
 
 if (isset($_POST['simpan_berita'])) {
     $judul = mysqli_real_escape_string($conn, $_POST['judul']);
@@ -20,15 +21,18 @@ if (isset($_POST['simpan_berita'])) {
     
     if ($insert) {
         header("Location: admin_berita.php?status=success");
+        exit;
     } else {
         header("Location: admin_berita.php?status=failed");
+        exit;
     }
 }
 
 if (isset($_GET['hapus'])) {
-    $id = $_GET['hapus'];
+    $id = mysqli_real_escape_string($conn, $_GET['hapus']);
     mysqli_query($conn, "DELETE FROM berita WHERE id = '$id'");
     header("Location: admin_berita.php?status=deleted");
+    exit;
 }
 ?>
 
@@ -40,9 +44,6 @@ if (isset($_GET['hapus'])) {
     <title>Dashboard Utama - Pangkalan Minyak</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        html { scroll-behavior: smooth; }
-    </style>
 </head>
 <body class="bg-slate-100 font-sans text-slate-900">
 
@@ -54,32 +55,26 @@ if (isset($_GET['hapus'])) {
             <nav class="mt-6 px-4">
                 <?php
                 $current_page = basename($_SERVER['PHP_SELF']);
-                
                 function isActive($page, $current_page) {
-                    return $page == $current_page 
-                        ? 'bg-blue-800 rounded-lg' 
-                        : 'hover:bg-blue-800 rounded-lg transition';
+                    return $page == $current_page ? 'bg-blue-800 rounded-lg' : 'hover:bg-blue-800 rounded-lg transition';
                 }
                 ?>
-
                 <a href="admin_dashboard.php" class="flex items-center p-3 mb-2 <?= isActive('admin_dashboard.php', $current_page) ?>">
                     <i class="fas fa-home mr-3 w-5"></i> Dashboard
                 </a>
-                
                 <a href="admin_stok.php" class="flex items-center p-3 mb-2 <?= isActive('admin_stok.php', $current_page) ?>">
                     <i class="fas fa-boxes mr-3 w-5"></i> Kelola Stok
                 </a>
-                
                 <a href="admin_berita.php" class="flex items-center p-3 mb-2 <?= isActive('admin_berita.php', $current_page) ?>">
                     <i class="fas fa-newspaper mr-3 w-5"></i> Update Berita
                 </a>
-                
                 <a href="proses_pesan.php" class="flex items-center p-3 mb-2 <?= isActive('proses_pesan.php', $current_page) ?>">
                     <i class="fas fa-shopping-cart mr-3 w-5"></i> Pesanan Masuk
                 </a>
-
+                <a href="data_user.php" class="flex items-center p-3 mb-2 <?= isActive('data_user.php', $current_page) ?>">
+                    <i class="fas fa-fw fa-users mr-3 w-5"></i> Data User
+                </a>
                 <div class="border-t border-blue-800 my-4"></div>
-                
                 <a href="logout.php" class="flex items-center p-3 text-red-300 hover:text-red-100 transition">
                     <i class="fas fa-sign-out-alt mr-3 w-5"></i> Logout
                 </a>
@@ -97,6 +92,12 @@ if (isset($_GET['hapus'])) {
             </header>
 
             <div class="p-8">
+                <?php if(isset($_GET['status'])): ?>
+                    <div class="mb-4 p-4 rounded-xl bg-emerald-100 text-emerald-800 text-sm font-bold">
+                        Aksi berhasil diproses!
+                    </div>
+                <?php endif; ?>
+
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <div class="bg-white p-8 rounded-3xl shadow-lg border border-blue-50">
                         <h3 class="text-lg font-black text-slate-800 mb-6 uppercase tracking-tighter">Buat Berita Baru</h3>
@@ -108,9 +109,9 @@ if (isset($_GET['hapus'])) {
                             <div>
                                 <label class="text-xs font-bold text-slate-400 uppercase">Kategori</label>
                                 <select name="kategori" class="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
-                                    <option value="Info Stok">Info Stok</option>
-                                    <option value="Harga">Update Harga</option>
-                                    <option value="Pengumuman">Pengumuman</option>
+                                    <option value="fas fa-boxes">Info Stok</option>
+                                    <option value="fas fa-tags">Update Harga</option>
+                                    <option value="fas fa-bullhorn">Pengumuman</option>
                                 </select>
                             </div>
                             <div>
@@ -124,18 +125,18 @@ if (isset($_GET['hapus'])) {
                     <div class="lg:col-span-2 bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
                         <h3 class="text-lg font-black text-slate-800 mb-6 uppercase tracking-tighter">Daftar Berita Terbaru</h3>
                         <div class="space-y-4">
-                            <?php while($row = mysqli_fetch_assoc($queryBerita)): ?>
+                            <?php while($rowBerita = mysqli_fetch_assoc($queryBerita)): ?>
                             <div class="p-5 border border-slate-100 rounded-2xl hover:bg-slate-50 transition">
                                 <div class="flex justify-between items-start">
                                     <div>
                                         <span class="text-[10px] font-bold bg-blue-100 text-blue-600 px-2 py-1 rounded uppercase mb-2 inline-block">
-                                            <?= $row['kategori'] ?>
+                                            <i class="<?= $rowBerita['kategori'] ?> mr-1"></i> Berita
                                         </span>
-                                        <h4 class="font-bold text-slate-800 text-lg"><?= $row['judul'] ?></h4>
-                                        <p class="text-xs text-slate-400 mb-3"><?= date('d F Y', strtotime($row['tanggal_post'])) ?></p>
-                                        <p class="text-sm text-slate-600 line-clamp-2"><?= $row['isi'] ?></p>
+                                        <h4 class="font-bold text-slate-800 text-lg"><?= htmlspecialchars($rowBerita['judul']) ?></h4>
+                                        <p class="text-xs text-slate-400 mb-3"><?= date('d F Y', strtotime($rowBerita['tanggal_post'])) ?></p>
+                                        <p class="text-sm text-slate-600 line-clamp-2"><?= htmlspecialchars($rowBerita['isi']) ?></p>
                                     </div>
-                                    <a href="?hapus=<?= $row['id'] ?>" onclick="return confirm('Hapus berita ini?')" class="text-red-400 hover:text-red-600 p-2">
+                                    <a href="?hapus=<?= $rowBerita['id'] ?>" onclick="return confirm('Hapus berita ini?')" class="text-red-400 hover:text-red-600 p-2">
                                         <i class="fas fa-trash"></i>
                                     </a>
                                 </div>

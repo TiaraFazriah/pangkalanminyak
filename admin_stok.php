@@ -53,6 +53,10 @@ $data = mysqli_fetch_assoc($queryStok);
                     <i class="fas fa-shopping-cart mr-3 w-5"></i> Pesanan Masuk
                 </a>
 
+                <a href="data_user.php" class="flex items-center p-3 mb-2 <?= isActive('data_user.php', $current_page) ?>">
+                    <i class="fas fa-fw fa-users mr-3 w-5"></i> Data User
+                </a>
+
                 <div class="border-t border-blue-800 my-4"></div>
                 
                 <a href="logout.php" class="flex items-center p-3 text-red-300 hover:text-red-100 transition">
