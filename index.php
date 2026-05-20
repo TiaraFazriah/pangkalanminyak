@@ -25,22 +25,32 @@ $queryBeritaIndex = mysqli_query($conn, "SELECT * FROM berita ORDER BY tanggal_p
 <body class="text-slate-900 leading-relaxed">
 
     <nav class="glass-nav shadow-sm sticky top-0 z-50 border-b border-slate-100">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center relative">
             <a href="#" class="text-2xl font-serif font-bold tracking-tighter text-blue-900">
                 PANGKALAN<span class="text-blue-500 underline decoration-blue-200">OKITA</span>
             </a>
-            <div class="hidden md:flex space-x-8 font-medium items-center text-xs uppercase tracking-widest">
-                <a href="#beranda" class="hover:text-blue-600 transition">Beranda</a>
-                <a href="#tentang" class="hover:text-blue-600 transition">Tentang</a>
-                <a href="#produk" class="hover:text-blue-600 transition">Harga</a>
-                <a href="#pemesanan" class="hover:text-blue-600 transition">Pesan</a>
-                <a href="#berita" class="hover:text-blue-600 transition">Berita</a>
-                <a href="#kontak" class="hover:text-blue-600 transition">Kontak</a>
+            
+            <button id="hamburger-btn" class="block md:hidden text-blue-900 focus:outline-none z-50">
+                <i class="fas fa-bars text-2xl transition-all duration-300" id="hamburger-icon"></i>
+            </button>
+
+            <div id="nav-menu" class="hidden md:flex flex-col md:flex-row absolute md:relative top-full left-0 w-full md:w-auto bg-white md:bg-transparent shadow-lg md:shadow-none p-6 md:p-0 space-y-4 md:space-y-0 md:space-x-8 font-medium items-start md:items-center text-xs uppercase tracking-widest transition-all duration-300">
+                <a href="#beranda" class="hover:text-blue-600 transition block w-full md:w-auto">Beranda</a>
+                <a href="#tentang" class="hover:text-blue-600 transition block w-full md:w-auto">Tentang</a>
+                <a href="#produk" class="hover:text-blue-600 transition block w-full md:w-auto">Harga</a>
+                <a href="#pemesanan" class="hover:text-blue-600 transition block w-full md:w-auto">Pesan</a>
+                <a href="#berita" class="hover:text-blue-600 transition block w-full md:w-auto">Berita</a>
+                <a href="#kontak" class="hover:text-blue-600 transition block w-full md:w-auto">Kontak</a>
+                
                 <?php if (isset($_SESSION['login'])): ?>
-                    <span class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-bold italic"><?= strtoupper($_SESSION['username']) ?></span>
-                    <a href="logout.php" class="text-red-500 font-bold border-l pl-4 border-slate-200">Logout</a>
+                    <div class="flex flex-col md:flex-row items-start md:items-center gap-4 pt-4 md:pt-0 border-t md:border-t-0 border-slate-100 w-full md:w-auto">
+                        <span class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-bold italic block text-center md:text-left"><?= strtoupper($_SESSION['username']) ?></span>
+                        <a href="logout.php" class="text-red-500 font-bold md:border-l md:pl-4 border-slate-200 block w-full md:w-auto">Logout</a>
+                    </div>
                 <?php else: ?>
-                    <a href="login.php" class="bg-blue-600 text-white px-8 py-2.5 rounded-full font-bold shadow-lg hover:bg-blue-700 transition">Masuk</a>
+                    <div class="pt-4 md:pt-0 border-t md:border-t-0 border-slate-100 w-full md:w-auto">
+                        <a href="login.php" class="bg-blue-600 text-white px-8 py-2.5 rounded-full font-bold shadow-lg hover:bg-blue-700 transition block text-center md:inline-block">Masuk</a>
+                    </div>
                 <?php endif; ?>
             </div>
         </div>
@@ -50,16 +60,16 @@ $queryBeritaIndex = mysqli_query($conn, "SELECT * FROM berita ORDER BY tanggal_p
         <div class="container mx-auto px-6">
             <div class="grid md:grid-cols-2 gap-20 items-center">
                 <div>
-                    <h1 class="text-7xl font-serif font-bold leading-[1.1] mb-8">Energi Bersih untuk<br><span class="text-blue-200 italic">Rumah Tangga.</span></h1>
+                    <h1 class="text-5xl md:text-7xl font-serif font-bold leading-[1.1] mb-8">Energi Bersih untuk<br><span class="text-blue-200 italic">Rumah Tangga.</span></h1>
                     <p class="text-lg text-blue-100 mb-10 border-l-4 border-white pl-6">
                         Tampilan utama pangkalan dengan informasi singkat. Distribusi terpercaya dengan standar pelayanan premium.
                     </p>
                     <div class="flex space-x-4">
-                        <a href="#produk" class="bg-white text-blue-600 px-10 py-4 rounded-xl font-bold uppercase text-xs tracking-widest shadow-xl hover:bg-blue-50 transition">Lihat Produk</a>
+                        <a href="#produk" class="bg-white text-blue-600 px-10 py-4 rounded-xl font-bold uppercase text-xs tracking-widest shadow-xl hover:bg-blue-50 transition">Lihat Selengkapnya</a>
                     </div>
                 </div>
                 <div class="relative" style="border-radius: 15px; overflow: hidden;">
-                    <img src="1.jpeg">
+                    <img src="1.jpeg" alt="Header Image">
                 </div>
             </div>
         </div>
@@ -69,7 +79,7 @@ $queryBeritaIndex = mysqli_query($conn, "SELECT * FROM berita ORDER BY tanggal_p
         <div class="container mx-auto px-6">
             <div class="grid md:grid-cols-2 gap-16 items-center">
                 <div class="order-2 md:order-1">
-                    <img src="2.jpeg" class="rounded-[2rem] shadow-lg grayscale hover:grayscale-0 transition duration-700">
+                    <img src="2.jpeg" alt="Tentang Kami" class="rounded-[2rem] shadow-lg grayscale hover:grayscale-0 transition duration-700">
                 </div>
                 <div class="order-1 md:order-2">
                     <span class="text-amber-600 font-black text-xs uppercase tracking-[0.3em]">Profil Pangkalan</span>
@@ -77,12 +87,12 @@ $queryBeritaIndex = mysqli_query($conn, "SELECT * FROM berita ORDER BY tanggal_p
                     <p class="text-slate-600 mb-6 leading-relaxed">
                         Didirikan untuk memberikan kemudahan akses bahan bakar bagi masyarakat. Kami berkomitmen menjaga transparansi harga dan keakuratan takaran di setiap liternya.
                     </p>
-                    <div class="flex items-center space-x-4">
-                        <div class="w-12 h-12 bg-amber-200 rounded-full flex items-center justify-center text-amber-700 font-bold">01</div>
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div class="w-12 h-12 bg-amber-200 rounded-full flex items-center justify-center text-amber-700 font-bold flex-shrink-0">01</div>
                         <p class="font-bold text-slate-700">Solusi energi rumah tangga: Tepat sasaran, selalu tersedia.</p>
                     </div>
                     <div class="flex items-center space-x-4">
-                        <div class="w-12 h-12 bg-amber-200 rounded-full flex items-center justify-center text-amber-700 font-bold">02</div>
+                        <div class="w-12 h-12 bg-amber-200 rounded-full flex items-center justify-center text-amber-700 font-bold flex-shrink-0">02</div>
                         <p class="font-bold text-slate-700">Jujur dalam Timbangan, Unggul dalam Pelayanan.</p>
                     </div>
                 </div>
@@ -92,18 +102,18 @@ $queryBeritaIndex = mysqli_query($conn, "SELECT * FROM berita ORDER BY tanggal_p
 
     <section id="produk" class="py-32 bg-emerald-900 text-white">
         <div class="container mx-auto px-6 text-center">
-            <h2 class="text-4xl font-serif font-bold mb-4">Informasi Produk & Harga</h2>
+            <h2 class="text-4xl font-serif font-bold mb-4">Informasi Stok & Harga</h2>
             <p class="text-emerald-200/60 mb-16 max-w-2xl mx-auto italic">Banner harga terbaru dan ketentuan pembelian maksimal per orang.</p>
             
             <div class="grid md:grid-cols-3 gap-8">
                 <div class="p-10 bg-emerald-800 rounded-[2.5rem] border border-emerald-700 shadow-xl">
                     <h4 class="text-sm font-black uppercase tracking-widest text-emerald-400 mb-2">Harga Per Liter</h4>
-                    <h3 class="text-5xl font-black mb-4">Rp <?= number_format($dataStok['harga_per_liter']) ?></h3>
+                    <h3 class="text-5xl font-black mb-4">Rp <?= number_format($dataStok['harga_per_liter'] ?? 0) ?></h3>
                     <p class="text-xs text-emerald-300">Update Harga Hari Ini</p>
                 </div>
                 <div class="p-10 bg-white text-emerald-900 rounded-[2.5rem] shadow-2xl">
                     <h4 class="text-sm font-black uppercase tracking-widest text-slate-400 mb-2">Stok Tersedia</h4>
-                    <h3 class="text-5xl font-black mb-4"><?= number_format($dataStok['liter_tersedia']) ?> <span class="text-xl">Ltr</span></h3>
+                    <h3 class="text-5xl font-black mb-4"><?= number_format($dataStok['liter_tersedia'] ?? 0) ?> <span class="text-xl">Ltr</span></h3>
                     <p class="text-xs font-bold text-emerald-600">Siap Distribusi</p>
                 </div>
                 <div class="p-10 bg-emerald-800 rounded-[2.5rem] border border-emerald-700 text-left">
@@ -136,7 +146,7 @@ $queryBeritaIndex = mysqli_query($conn, "SELECT * FROM berita ORDER BY tanggal_p
                     <input type="number" name="nomor_hp" required class="w-full p-4 bg-slate-50 border rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none">
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-bold uppercase mb-2 text-slate-500">Jumlah Liter</label>
                         <input type="number" name="jumlah" min="1" max="800" required class="w-full p-4 bg-slate-50 border rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none">
@@ -154,6 +164,7 @@ $queryBeritaIndex = mysqli_query($conn, "SELECT * FROM berita ORDER BY tanggal_p
         </div>
     </section>
     <?php endif; ?>
+
     <section id="berita" class="py-32 bg-purple-50">
         <div class="container mx-auto px-6">
             <div class="flex justify-between items-end mb-12">
@@ -166,7 +177,7 @@ $queryBeritaIndex = mysqli_query($conn, "SELECT * FROM berita ORDER BY tanggal_p
                 <?php if(mysqli_num_rows($queryBeritaIndex) > 0): ?>
                     <?php while($b = mysqli_fetch_assoc($queryBeritaIndex)): ?>
                     <div class="bg-white p-8 rounded-3xl shadow-sm border-b-8 border-purple-500 hover:transform hover:-translate-y-2 transition duration-300">
-                        <i class="<?= $b['kategori'] ?> text-3xl text-purple-600 mb-6"></i>
+                        <i class="<?= htmlspecialchars($b['kategori']) ?> text-3xl text-purple-600 mb-6"></i>
                         <h3 class="font-bold text-xl mb-4 text-slate-800"><?= htmlspecialchars($b['judul']) ?></h3>
                         <p class="text-slate-500 text-sm leading-relaxed line-clamp-3">
                             <?= nl2br(htmlspecialchars($b['isi'])) ?>
@@ -195,7 +206,7 @@ $queryBeritaIndex = mysqli_query($conn, "SELECT * FROM berita ORDER BY tanggal_p
                         <h2 class="text-4xl font-serif font-bold mb-8">Informasi Kontak <br>& Lokasi</h2>
                         <div class="space-y-8">
                             <div class="flex items-center space-x-6">
-                                <div class="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center text-2xl shadow-lg shadow-blue-500/20">
+                                <div class="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center text-2xl shadow-lg shadow-blue-500/20 flex-shrink-0">
                                     <i class="fab fa-whatsapp"></i>
                                 </div>
                                 <div>
@@ -204,7 +215,7 @@ $queryBeritaIndex = mysqli_query($conn, "SELECT * FROM berita ORDER BY tanggal_p
                                 </div>
                             </div>
                             <div class="flex items-center space-x-6">
-                                <div class="w-14 h-14 bg-slate-800 rounded-2xl flex items-center justify-center text-2xl">
+                                <div class="w-14 h-14 bg-slate-800 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0">
                                     <i class="fas fa-map-marker-alt"></i>
                                 </div>
                                 <div>
@@ -225,5 +236,31 @@ $queryBeritaIndex = mysqli_query($conn, "SELECT * FROM berita ORDER BY tanggal_p
     <footer class="py-12 bg-black text-center text-slate-600 text-[10px] font-black uppercase tracking-[0.5em]">
         © 2026 Pangkalan Minyak Okita 
     </footer>
+
+    <script>
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const hamburgerIcon = document.getElementById('hamburger-icon');
+        const navMenu = document.getElementById('nav-menu');
+        const navLinks = navMenu.querySelectorAll('a');
+
+        hamburgerBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('hidden');
+            navMenu.classList.toggle('flex');
+
+            hamburgerIcon.classList.toggle('fa-bars');
+            hamburgerIcon.classList.toggle('fa-times');
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (!navMenu.classList.contains('hidden') && window.innerWidth < 768) {
+                    navMenu.classList.add('hidden');
+                    navMenu.classList.remove('flex');
+                    hamburgerIcon.classList.add('fa-bars');
+                    hamburgerIcon.classList.remove('fa-times');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
